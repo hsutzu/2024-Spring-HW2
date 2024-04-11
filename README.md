@@ -22,9 +22,13 @@ final reward (tokenB balance): 20.205429200293473
 ## Problem 2
 What is slippage in AMM, and how does Uniswap V2 address this issue? Please illustrate with a function as an example.
 
-> Solution
+> Solution  
 Slippage in the context of Automated Market Makers (AMMs) refers to the difference between the expected price of a trade and the executed price.
 This difference arises because the actual price of an asset in an AMM is determined by a mathematical formula based on the supply of each asset in the liquidity pool.
+#### Addressing Slippage in Uniswap V2
+
+
+
 ## Problem 3
 Please examine the mint function in the UniswapV2Pair contract. Upon initial liquidity minting, a minimum liquidity is subtracted. What is the rationale behind this design?
 
