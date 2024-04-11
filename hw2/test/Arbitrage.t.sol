@@ -96,11 +96,12 @@ contract Arbitrage is Test {
         uint256 slippageTolerance = 500; // Representing a 5% tolerance, adjust based on your risk appetite
 
         // Define the path for your swap
-        address[] memory path = new address[](3);
+        address[] memory path = new address[](5);
         path[0] = address(tokenB);
         path[1] = address(tokenC);
-        path[2] = address(tokenD); // Adjust based on your identified arbitrage path
-
+        path[2] = address(tokenD)
+        path[3] = address(tokenE); // Adjust based on your identified arbitrage path
+        path[4] = address(tokenA)
         // First, get an estimate of the output amount
         uint256[] memory amountsOutEstimate = router.getAmountsOut(amountIn, path);
 
