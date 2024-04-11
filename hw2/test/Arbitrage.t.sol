@@ -76,21 +76,47 @@ contract Arbitrage is Test {
         uint256 tokensBefore = tokenB.balanceOf(arbitrager);
         console.log("Before Arbitrage tokenB Balance: %s", tokensBefore);
         tokenB.approve(address(router), 5 ether);
-        address[] memory path = new address[](5);
-        path[0] = address(tokenB);
-        path[1] = address(tokenA);
-        path[2] = address(tokenD);
-        path[3] = address(tokenC);
-        path[4] = address(tokenB);
+        // address[] memory path = new address[](5);
+        // path[0] = address(tokenB);
+        // path[1] = address(tokenA);
+        // path[2] = address(tokenD);
+        //path[3] = address(tokenC);
+        // path[4] = address(tokenB);
 
         // 执行交易
-        router.swapExactTokensForTokens(
-            5 ether, // 使用的tokenB数量
-            0,       // 接受的最小tokenB数量，根据实际情况调整
-            path,    // 交换路径
-            arbitrager, // 接收最终代币的地址
-            block.timestamp + 300 // 交易的截止时间
-        );
+        //router.swapExactTokensForTokens(
+        //    5 ether, // 使用的tokenB数量
+        //    0,       // 接受的最小tokenB数量，根据实际情况调整
+        //    path,    // 交换路径
+        //    arbitrager, // 接收最终代币的地址
+        //    block.timestamp + 300 // 交易的截止时间
+        //);
+
+        // Step 1: Swap tokenB for tokenA
+        address[] memory pathBA = new address[](2);
+        pathBA[0] = address(tokenB);
+        pathBA[1] = address(tokenA);
+        router.swapExactTokensForTokens(5 ether, 0, pathBA, arbitrager, block.timestamp + 120);
+        
+        // Calculate how much tokenA you have now and approve it for swapping
+        uint256 tokenABalance = tokenA.balanceOf(arbitrager);
+        tokenA.approve(address(router), tokenABalance);
+        
+        // Step 2: Swap tokenA for tokenD
+        address[] memory pathAD = new address[](2);
+        pathAD[0] = address(tokenA);
+        pathAD[1] = address(tokenD);
+        router.swapExactTokensForTokens(tokenABalance, 0, pathAD, arbitrager, block.timestamp + 120);
+        
+        // Calculate how much tokenD you have now and approve it for swapping
+        uint256 tokenDBalance = tokenD.balanceOf(arbitrager);
+        tokenD.approve(address(router), tokenDBalance);
+        
+        // Step 3: Swap tokenD back to tokenB
+        address[] memory pathDB = new address[](2);
+        pathDB[0] = address(tokenD);
+        pathDB[1] = address(tokenB);
+        router.swapExactTokensForTokens(tokenDBalance, 0, pathDB, arbitrager, block.timestamp + 120);
         uint256 tokensAfter = tokenB.balanceOf(arbitrager);
         assertGt(tokensAfter, 20 ether);
         console.log("After Arbitrage tokenB Balance: %s", tokensAfter);
