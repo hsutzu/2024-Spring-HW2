@@ -76,21 +76,6 @@ contract Arbitrage is Test {
         uint256 tokensBefore = tokenB.balanceOf(arbitrager);
         console.log("Before Arbitrage tokenB Balance: %s", tokensBefore);
         tokenB.approve(address(router), 5 ether);
-        // address[] memory path = new address[](5);
-        // path[0] = address(tokenB);
-        // path[1] = address(tokenA);
-        // path[2] = address(tokenD);
-        //path[3] = address(tokenC);
-        // path[4] = address(tokenB);
-
-        // 执行交易
-        //router.swapExactTokensForTokens(
-        //    5 ether, // 使用的tokenB数量
-        //    0,       // 接受的最小tokenB数量，根据实际情况调整
-        //    path,    // 交换路径
-        //    arbitrager, // 接收最终代币的地址
-        //    block.timestamp + 300 // 交易的截止时间
-        //);
 
         uint256 amountIn = 5 ether; // The amount of tokenB you're swapping
         uint256 slippageTolerance = 500; // Representing a 5% tolerance, adjust based on your risk appetite

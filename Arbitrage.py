@@ -32,11 +32,15 @@ def generate_paths(start_token, depth, current_path=[]):
     return paths
 
 def evaluate_path(path, start_amount):
+    print("start amount: ", start_amount)
     amount = start_amount
     for i in range(len(path) - 1):
         amount = swap(path[i], path[i+1], amount)
         if amount == 0:
             return 0
+        print(amount)
+        
+
     return amount
 
 
