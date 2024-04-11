@@ -98,10 +98,10 @@ contract Arbitrage is Test {
         // Define the path for your swap
         address[] memory path = new address[](5);
         path[0] = address(tokenB);
-        path[1] = address(tokenC);
+        path[1] = address(tokenA);
         path[2] = address(tokenD);
-        path[3] = address(tokenE); // Adjust based on your identified arbitrage path
-        path[4] = address(tokenA);
+        path[3] = address(tokenC); // Adjust based on your identified arbitrage path
+        path[4] = address(tokenB);
         // First, get an estimate of the output amount
         uint256[] memory amountsOutEstimate = router.getAmountsOut(amountIn, path);
 
