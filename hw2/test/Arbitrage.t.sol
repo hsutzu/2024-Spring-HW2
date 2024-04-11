@@ -92,31 +92,21 @@ contract Arbitrage is Test {
         //    block.timestamp + 300 // 交易的截止时间
         //);
 
-        // Step 1: Swap tokenB for tokenA
-        address[] memory pathBA = new address[](2);
-        pathBA[0] = address(tokenB);
-        pathBA[1] = address(tokenA);
-        router.swapExactTokensForTokens(5 ether, 0, pathBA, arbitrager, block.timestamp + 120);
-        
-        // Calculate how much tokenA you have now and approve it for swapping
-        uint256 tokenABalance = tokenA.balanceOf(arbitrager);
-        tokenA.approve(address(router), tokenABalance);
-        
-        // Step 2: Swap tokenA for tokenD
-        address[] memory pathAD = new address[](2);
-        pathAD[0] = address(tokenA);
-        pathAD[1] = address(tokenD);
-        router.swapExactTokensForTokens(tokenABalance, 0, pathAD, arbitrager, block.timestamp + 120);
-        
-        // Calculate how much tokenD you have now and approve it for swapping
-        uint256 tokenDBalance = tokenD.balanceOf(arbitrager);
-        tokenD.approve(address(router), tokenDBalance);
-        
-        // Step 3: Swap tokenD back to tokenB
-        address[] memory pathDB = new address[](2);
-        pathDB[0] = address(tokenD);
-        pathDB[1] = address(tokenB);
-        router.swapExactTokensForTokens(tokenDBalance, 0, pathDB, arbitrager, block.timestamp + 120);
+        uint256 amountIn = 5 ether; // Starting with 5 units of tokenB
+        address[] memory path = new address[](3);
+        path[0] = address(tokenB);
+        path[1] = address(tokenC);
+        path[2] = address(tokenD); // Adjust the path based on your arbitrage strategy
+
+        // Assuming we're swapping tokenB -> tokenC -> tokenD in this example
+        // You would need to perform similar swaps for the rest of the path you've identified
+        uint[] memory amounts = router.swapExactTokensForTokens(
+            amountIn,
+            0, // Set to a reasonable minimum amount to account for slippage
+            path,
+            address(this),
+            block.timestamp + 300 // Deadline in 5 minutes from now
+        );
         uint256 tokensAfter = tokenB.balanceOf(arbitrager);
         assertGt(tokensAfter, 20 ether);
         console.log("After Arbitrage tokenB Balance: %s", tokensAfter);
