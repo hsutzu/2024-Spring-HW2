@@ -108,7 +108,7 @@ contract Arbitrage is Test {
         uint256 amountOutMin = amountsOutEstimate[amountsOutEstimate.length - 1] * (10000 - slippageTolerance) / 10000;
 
         // Perform the swap
-        uint[] memory amounts = router.swapExactTokensForTokens(
+        router.swapExactTokensForTokens(
             amountIn,
             amountOutMin, // Adjusted to include slippage tolerance
             path,
