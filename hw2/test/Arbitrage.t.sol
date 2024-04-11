@@ -92,18 +92,28 @@ contract Arbitrage is Test {
         //    block.timestamp + 300 // 交易的截止时间
         //);
 
-        uint256 amountIn = 5 ether; // Starting amount of tokenB you have
-        uint256 amountOutMin = 1 ether; // Set to a realistic minimum to account for slippage, adjust based on your calculations
-        address[] memory path = new address[](2);
-        path[0] = address(tokenB);
-        path[1] = address(tokenC); // Example path, adjust according to your arbitrage path
+        uint256 amountIn = 5 ether; // The amount of tokenB you're swapping
+        uint256 slippageTolerance = 500; // Representing a 5% tolerance, adjust based on your risk appetite
 
+        // Define the path for your swap
+        address[] memory path = new address[](3);
+        path[0] = address(tokenB);
+        path[1] = address(tokenC);
+        path[2] = address(tokenD); // Adjust based on your identified arbitrage path
+
+        // First, get an estimate of the output amount
+        uint256[] memory amountsOutEstimate = router.getAmountsOut(amountIn, path);
+
+        // Apply slippage tolerance to calculate minimum amount out
+        uint256 amountOutMin = amountsOutEstimate[amountsOutEstimate.length - 1] * (10000 - slippageTolerance) / 10000;
+
+        // Perform the swap
         uint[] memory amounts = router.swapExactTokensForTokens(
             amountIn,
-            amountOutMin, // Adjust this based on the expected minimum return to manage slippage
+            amountOutMin, // Adjusted to include slippage tolerance
             path,
-            address(this), // Contract address should be the recipient
-            block.timestamp + 300 // Deadline
+            address(this), // Assuming the contract itself will receive the output tokens
+            block.timestamp + 300 // Deadline to prevent hanging transactions
         );
 
         uint256 tokensAfter = tokenB.balanceOf(arbitrager);
