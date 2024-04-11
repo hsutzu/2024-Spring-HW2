@@ -1,75 +1,3 @@
-# liquidity = {
-#     ("tokenA", "tokenB"): (17, 10),
-#     ("tokenA", "tokenC"): (11, 7),
-#     ("tokenA", "tokenD"): (15, 9),
-#     ("tokenA", "tokenE"): (21, 5),
-#     ("tokenB", "tokenC"): (36, 4),
-#     ("tokenB", "tokenD"): (13, 6),
-#     ("tokenB", "tokenE"): (25, 3),
-#     ("tokenC", "tokenD"): (30, 12),
-#     ("tokenC", "tokenE"): (10, 8),
-#     ("tokenD", "tokenE"): (60, 25),
-# }
-
-# def get_exchange_rate(from_token, to_token):
-#     if (from_token, to_token) in liquidity:
-#         supply, demand = liquidity[(from_token, to_token)]
-#     elif (to_token, from_token) in liquidity:
-#         demand, supply = liquidity[(to_token, from_token)]
-#     else:
-#         return 0
-#     return demand / supply
-
-
-# def generate_paths(start_token, depth, current_path=[]):
-#     if depth == 0:
-#         return [current_path]
-#     paths = []
-#     for token in ["tokenA", "tokenB", "tokenC", "tokenD", "tokenE"]:
-#         if not current_path or token != current_path[-1]:  # Avoid immediate loops
-#             new_path = current_path + [token]
-#             paths.extend(generate_paths(start_token, depth-1, new_path))
-#     return paths
-
-# def evaluate_path(path, start_amount):
-#     print("start amount: ", start_amount)
-#     amount = start_amount
-#     for i in range(len(path) - 1):
-#         amount = swap(path[i], path[i+1], amount)
-#         if amount == 0:
-#             return 0
-#         print(amount)
-        
-
-#     return amount
-
-
-
-# def swap(token_from, token_to, amount):
-#     if (token_from, token_to) in liquidity:
-#         reserve_from, reserve_to = liquidity[(token_from, token_to)]
-#     elif (token_to, token_from) in liquidity:
-#         reserve_to, reserve_from = liquidity[(token_to, token_from)]
-#     else:
-#         return 0  # No liquidity pool for this pair
-    
-#     # Simplified exchange calculation without considering fees or slippage
-#     return amount * reserve_to / (reserve_from + amount)
-
-
-# def find_arbitrage(start_token, start_amount, max_depth):
-#     for depth in range(2, max_depth + 1):  # Start at 2 to ensure at least one swap back to B
-#         paths = generate_paths(start_token, depth, [start_token])
-#         for path in paths:
-#             if path[-1] == start_token:  # Ensure path ends with start_token
-#                 final_amount = evaluate_path(path, start_amount)
-#                 if final_amount > 20:
-#                     print(f"Arbitrage opportunity: path: {'->'.join(path)}, tokenB balance={final_amount:.6f}")
-#                     return  # Return on first found opportunity
-
-# # Let's try finding an arbitrage opportunity with a maximum path length of 5
-# find_arbitrage("tokenB", 5, 5)
-
 liquidity = {
     ("tokenA", "tokenB"): (17, 10),
     ("tokenA", "tokenC"): (11, 7),
@@ -83,43 +11,61 @@ liquidity = {
     ("tokenD", "tokenE"): (60, 25),
 }
 
-# Transform liquidity into a more usable format for graph
-graph = {}
-for (token1, token2), (liquidity1, liquidity2) in liquidity.items():
-    if token1 not in graph:
-        graph[token1] = {}
-    if token2 not in graph:
-        graph[token2] = {}
-    graph[token1][token2] = liquidity2 / liquidity1
-    graph[token2][token1] = liquidity1 / liquidity2
+def get_exchange_rate(from_token, to_token):
+    if (from_token, to_token) in liquidity:
+        supply, demand = liquidity[(from_token, to_token)]
+    elif (to_token, from_token) in liquidity:
+        demand, supply = liquidity[(to_token, from_token)]
+    else:
+        return 0
+    return demand / supply
 
-def find_paths(start_token, current_token, visited, current_path, paths, amount, depth=0):
-    # Limiting the depth to avoid infinite recursion in cycles
-    if depth > len(graph):
-        return
 
-    if current_token == start_token and len(current_path) > 1: # Ensure we've made at least one trade
-        if amount > 20: # Goal: End with more than 20 units of tokenB
-            paths.append((current_path.copy(), amount))
-        return
+def generate_paths(start_token, depth, current_path=[]):
+    if depth == 0:
+        return [current_path]
+    paths = []
+    for token in ["tokenA", "tokenB", "tokenC", "tokenD", "tokenE"]:
+        if not current_path or token != current_path[-1]:  # Avoid immediate loops
+            new_path = current_path + [token]
+            paths.extend(generate_paths(start_token, depth-1, new_path))
+    return paths
 
-    for next_token, rate in graph[current_token].items():
-        if next_token not in visited or next_token == start_token:
-            visited.add(next_token)
-            current_path.append(next_token)
-            find_paths(start_token, next_token, visited, current_path, paths, amount * rate, depth + 1)
-            visited.remove(next_token)
-            current_path.pop()
+def evaluate_path(path, start_amount):
+    print("start amount: ", start_amount)
+    amount = start_amount
+    for i in range(len(path) - 1):
+        amount = swap(path[i], path[i+1], amount)
+        if amount == 0:
+            return 0
+        print(amount)
+        
 
-paths = []
-find_paths('tokenB', 'tokenB', set(['tokenB']), ['tokenB'], paths, 5)
+    return amount
 
-# Sorting paths by the ending balance to print the most profitable first
-paths.sort(key=lambda x: x[1], reverse=True)
 
-if paths:
-    # Print only the most profitable path or as per the requirement
-    for path, amount in paths[:1]: # Change slice for more paths
-        print(f"path: {'->'.join(path)}, tokenB balance={amount:.6f}")
-else:
-    print("No profitable arbitrage path found.")
+
+def swap(token_from, token_to, amount):
+    if (token_from, token_to) in liquidity:
+        reserve_from, reserve_to = liquidity[(token_from, token_to)]
+    elif (token_to, token_from) in liquidity:
+        reserve_to, reserve_from = liquidity[(token_to, token_from)]
+    else:
+        return 0  # No liquidity pool for this pair
+    
+    # Simplified exchange calculation without considering fees or slippage
+    return amount * reserve_to / (reserve_from + amount)
+
+
+def find_arbitrage(start_token, start_amount, max_depth):
+    for depth in range(2, max_depth + 1):  # Start at 2 to ensure at least one swap back to B
+        paths = generate_paths(start_token, depth, [start_token])
+        for path in paths:
+            if path[-1] == start_token:  # Ensure path ends with start_token
+                final_amount = evaluate_path(path, start_amount)
+                if final_amount > 20:
+                    print(f"Arbitrage opportunity: path: {'->'.join(path)}, tokenB balance={final_amount:.6f}")
+                    return  # Return on first found opportunity
+
+# Let's try finding an arbitrage opportunity with a maximum path length of 5
+find_arbitrage("tokenB", 5, 5)
