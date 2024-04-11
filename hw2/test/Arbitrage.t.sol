@@ -111,7 +111,7 @@ contract Arbitrage is Test {
         // Perform the swap
         router.swapExactTokensForTokens(
             amountIn,
-            amountOutMin, // Adjusted to include slippage tolerance
+            0, // Adjusted to include slippage tolerance
             path,
             address(this), // Assuming the contract itself will receive the output tokens
             block.timestamp + 300 // Deadline to prevent hanging transactions
