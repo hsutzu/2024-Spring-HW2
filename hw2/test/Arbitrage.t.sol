@@ -92,21 +92,20 @@ contract Arbitrage is Test {
         //    block.timestamp + 300 // 交易的截止时间
         //);
 
-        uint256 amountIn = 5 ether; // Starting with 5 units of tokenB
-        address[] memory path = new address[](3);
+        uint256 amountIn = 5 ether; // Starting amount of tokenB you have
+        uint256 amountOutMin = 1 ether; // Set to a realistic minimum to account for slippage, adjust based on your calculations
+        address[] memory path = new address[](2);
         path[0] = address(tokenB);
-        path[1] = address(tokenC);
-        path[2] = address(tokenD); // Adjust the path based on your arbitrage strategy
+        path[1] = address(tokenC); // Example path, adjust according to your arbitrage path
 
-        // Assuming we're swapping tokenB -> tokenC -> tokenD in this example
-        // You would need to perform similar swaps for the rest of the path you've identified
         uint[] memory amounts = router.swapExactTokensForTokens(
             amountIn,
-            0, // Set to a reasonable minimum amount to account for slippage
+            amountOutMin, // Adjust this based on the expected minimum return to manage slippage
             path,
-            address(this),
-            block.timestamp + 300 // Deadline in 5 minutes from now
+            address(this), // Contract address should be the recipient
+            block.timestamp + 300 // Deadline
         );
+
         uint256 tokensAfter = tokenB.balanceOf(arbitrager);
         assertGt(tokensAfter, 20 ether);
         console.log("After Arbitrage tokenB Balance: %s", tokensAfter);
