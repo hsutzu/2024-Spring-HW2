@@ -36,14 +36,14 @@ To address slippage, Uniswap V2 allows users to specify a maximum slippage toler
 ## Problem 3
 Please examine the mint function in the UniswapV2Pair contract. Upon initial liquidity minting, a minimum liquidity is subtracted. What is the rationale behind this design?
 
-> Solution  
+> Solution    
 In Uniswap V2, the first time liquidity is provided to a pool, a small amount of liquidity tokens (specifically, 1000 units) is permanently locked in the pool. This is subtracted from the initial mint of liquidity tokens. The primary rationale behind this design choice is to avoid divisibility issues and rounding errors with very small numbers, ensuring that the pool cannot be completely drained (which would break the 
 x×y=k invariant). This minimal amount serves as a "buffer" for these technical concerns.
 
 ## Problem 4
 Investigate the minting function in the UniswapV2Pair contract. When depositing tokens (not for the first time), liquidity can only be obtained using a specific formula. What is the intention behind this?
 
-> Solution  
+> Solution    
 When liquidity is added to an existing pool in Uniswap V2 (i.e., not the first time), the amount of liquidity tokens minted for the depositor is determined by the formula:
 
 ### Function: Calculate Liquidity Minted
