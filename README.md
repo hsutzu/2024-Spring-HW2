@@ -27,7 +27,6 @@ What is slippage in AMM, and how does Uniswap V2 address this issue? Please illu
 
 Slippage refers to the difference between the expected price of a trade and the price at which the trade is executed. In AMMs, slippage often occurs due to the constant product formula used to maintain liquidity pools' invariant.
 
-![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/e3fd038e-d231-45b9-9a4c-fd19c11bc351)
 #### Example of Slippage Calculation
 Suppose you want to swap token A for token B in a pool that contains x of token A and y of token B.
 1. Initial State:
