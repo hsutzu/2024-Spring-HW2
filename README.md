@@ -7,7 +7,8 @@ Provide your profitable path, the amountIn, amountOut value for each swap, and y
 
 > Solution  
 
-My profitable path is tokenB->tokenA->tokenD->tokenC->tokenB.
+My profitable path is tokenB->tokenA->tokenD->tokenC->tokenB.  
+
 swap1:  
 amountIn: 5, amountOut: 5.666666666666667  
 swap2:  
