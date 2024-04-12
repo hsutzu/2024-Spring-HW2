@@ -23,6 +23,7 @@ final reward (tokenB balance): 20.205429200293473
 What is slippage in AMM, and how does Uniswap V2 address this issue? Please illustrate with a function as an example.
 
 > Solution  
+
 Slippage refers to the difference between the expected price of a trade and the price at which the trade is executed. In AMMs, slippage often occurs due to the constant product formula used to maintain liquidity pools' invariant.
 
 #### Addressing Slippage in Uniswap V2
@@ -37,6 +38,7 @@ To address slippage, Uniswap V2 allows users to specify a maximum slippage toler
 Please examine the mint function in the UniswapV2Pair contract. Upon initial liquidity minting, a minimum liquidity is subtracted. What is the rationale behind this design?
 
 > Solution    
+
 In Uniswap V2, the first time liquidity is provided to a pool, a small amount of liquidity tokens (specifically, 1000 units) is permanently locked in the pool. This is subtracted from the initial mint of liquidity tokens. The primary rationale behind this design choice is to avoid divisibility issues and rounding errors with very small numbers, ensuring that the pool cannot be completely drained (which would break the 
 x×y=k invariant). This minimal amount serves as a "buffer" for these technical concerns.
 
@@ -44,6 +46,7 @@ x×y=k invariant). This minimal amount serves as a "buffer" for these technical 
 Investigate the minting function in the UniswapV2Pair contract. When depositing tokens (not for the first time), liquidity can only be obtained using a specific formula. What is the intention behind this?
 
 > Solution    
+
 When liquidity is added to an existing pool in Uniswap V2 (i.e., not the first time), the amount of liquidity tokens minted for the depositor is determined by the formula:
 
 ### Function: Calculate Liquidity Minted
@@ -61,6 +64,7 @@ amount0_deposited amount0_deposited and amount1_deposited amount1_deposited are 
 What is a sandwich attack, and how might it impact you when initiating a swap?
 
 > Solution  
+
 A sandwich attack is a type of front-running attack where a malicious trader will place a buy order right before a known upcoming transaction, only to sell it right after at a higher price due to the slippage caused by the victim's transaction. This affects traders on platforms like Uniswap because it can lead to worsened trade execution prices.
 
 Victims of a sandwich attack often receive less output for their swap than anticipated as the attacker manipulates the market price between the two transactions. This is particularly detrimental in high-slippage environments or when large orders are placed without adequate slippage protection.
