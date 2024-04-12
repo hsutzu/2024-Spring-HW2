@@ -45,21 +45,24 @@ Investigate the minting function in the UniswapV2Pair contract. When depositing 
 
 > Solution  
 When liquidity is added to an existing pool in Uniswap V2 (i.e., not the first time), the amount of liquidity tokens minted for the depositor is determined by the formula:
+
 ### Function: Calculate Liquidity Minted
 
 The amount of liquidity minted can be calculated using the following formula:
 
-$$
-\text{liquidity\_minted} = \min\left(\frac{\text{amount0\_deposited} \times \text{total\_liquidity}}{x}, \frac{\text{amount1\_deposited} \times \text{total\_liquidity}}{y}\right)
-$$
-Where:
-- `amount0_deposited` is the amount of the first token deposited.
-- `amount1_deposited` is the amount of the second token deposited.
-- `total_liquidity` is the current total liquidity.
-- `x` and `y` are the pool reserves for each token respectively.
+liquidity_minted=min( x amount0_deposited×total_liquidity/x, amount1_deposited×total_liquidit​/y)
+
+
+Where x and y are the reserves of the two tokens in the pool before the deposit, and 
+amount0_deposited amount0_deposited and amount1_deposited amount1_deposited are the amounts of the tokens being added. This formula ensures that the liquidity shares are issued proportionally to the depositor's contribution relative to the existing pool size, maintaining the invariant and fair distribution among liquidity providers.
+
 
 ## Problem 5
 What is a sandwich attack, and how might it impact you when initiating a swap?
 
-> Solution
+> Solution  
+A sandwich attack is a type of front-running attack where a malicious trader will place a buy order right before a known upcoming transaction, only to sell it right after at a higher price due to the slippage caused by the victim's transaction. This affects traders on platforms like Uniswap because it can lead to worsened trade execution prices.
 
+Victims of a sandwich attack often receive less output for their swap than anticipated as the attacker manipulates the market price between the two transactions. This is particularly detrimental in high-slippage environments or when large orders are placed without adequate slippage protection.
+
+These insights help in understanding the underlying mechanics and potential vulnerabilities in using AMMs like Uniswap V2.
