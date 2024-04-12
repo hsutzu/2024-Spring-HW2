@@ -49,8 +49,13 @@ x and y, thus changing the price according to the curve defined by this equation
 To address slippage, Uniswap V2 allows users to specify a maximum slippage tolerance when placing a trade. This means trades will revert if the price slippage exceeds the user’s specified tolerance, preventing unexpected losses due to high slippage in volatile market conditions. This is especially important in large trades relative to the pool's size.
 
 #### Example function to calculate minimum expected tokens with slippage tolerance:
+minimum_tokens = tokens_received × (1 − slippage_tolerance)  
 
-![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/a134f70c-fd5d-41cd-93a6-a3e1a0e8dad3)
+Where:  
+ * tokens_received = 454.55 (from our previous calculation)  
+ * slippage_tolerance = 0.01 (1%)
+
+Thus, if the expected tokens based on the above slippage are lower than 454.55 × 0.99 = 449.99, the transaction would not execute.  
 
 ## Problem 3
 Please examine the mint function in the UniswapV2Pair contract. Upon initial liquidity minting, a minimum liquidity is subtracted. What is the rationale behind this design?
