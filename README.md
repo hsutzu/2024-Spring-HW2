@@ -52,7 +52,6 @@ The amount of liquidity minted can be calculated using the following formula:
 $$
 \text{liquidity\_minted} = \min\left(\frac{\text{amount0\_deposited} \times \text{total\_liquidity}}{x}, \frac{\text{amount1\_deposited} \times \text{total\_liquidity}}{y}\right)
 $$
-
 Where:
 - `amount0_deposited` is the amount of the first token deposited.
 - `amount1_deposited` is the amount of the second token deposited.
