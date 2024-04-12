@@ -76,11 +76,11 @@ When liquidity is added to an existing pool in Uniswap V2 (i.e., not the first t
 
 The amount of liquidity minted can be calculated using the following formula:
 
-#### liquidity_minted=min( x amount0_deposited×total_liquidity/x, amount1_deposited×total_liquidit​/y)
+liquidity_minted = min( (amount0_deposited × total_liquidity) / x, (amount1_deposited × total_liquidit​) / y )
 
 
 Where x and y are the reserves of the two tokens in the pool before the deposit, and 
-amount0_deposited amount0_deposited and amount1_deposited amount1_deposited are the amounts of the tokens being added. This formula ensures that the liquidity shares are issued proportionally to the depositor's contribution relative to the existing pool size, maintaining the invariant and fair distribution among liquidity providers.
+amount0_deposited and amount1_deposited are the amounts of the tokens being added. This formula ensures that the liquidity shares are issued proportionally to the depositor's contribution relative to the existing pool size, maintaining the invariant and fair distribution among liquidity providers.
 
 
 ## Problem 5
