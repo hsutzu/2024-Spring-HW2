@@ -27,7 +27,7 @@ What is slippage in AMM, and how does Uniswap V2 address this issue? Please illu
 
 Slippage refers to the difference between the expected price of a trade and the price at which the trade is executed. In AMMs, slippage often occurs due to the constant product formula used to maintain liquidity pools' invariant.
 
-![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/a5b8af65-683a-418d-976b-a8b39633722b)
+![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/e3fd038e-d231-45b9-9a4c-fd19c11bc351)
 
 
 #### Addressing Slippage in Uniswap V2
@@ -37,9 +37,7 @@ x and y, thus changing the price according to the curve defined by this equation
 
 To address slippage, Uniswap V2 allows users to specify a maximum slippage tolerance when placing a trade. This means trades will revert if the price slippage exceeds the user’s specified tolerance, preventing unexpected losses due to high slippage in volatile market conditions. This is especially important in large trades relative to the pool's size.
 
-
-![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/dba63e6a-77fb-4105-b699-aceaaf12df6a)
-
+![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/a134f70c-fd5d-41cd-93a6-a3e1a0e8dad3)
 
 ## Problem 3
 Please examine the mint function in the UniswapV2Pair contract. Upon initial liquidity minting, a minimum liquidity is subtracted. What is the rationale behind this design?
