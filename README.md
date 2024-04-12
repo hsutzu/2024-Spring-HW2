@@ -28,14 +28,28 @@ What is slippage in AMM, and how does Uniswap V2 address this issue? Please illu
 Slippage refers to the difference between the expected price of a trade and the price at which the trade is executed. In AMMs, slippage often occurs due to the constant product formula used to maintain liquidity pools' invariant.
 
 ![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/e3fd038e-d231-45b9-9a4c-fd19c11bc351)
-
-
+#### Example of Slippage Calculation
+Suppose you want to swap token A for token B in a pool that contains x of token A and y of token B.
+1. Initial State:
+ * x = 10000 (TokenA)
+ * y = 5000 (TokenB)
+ * k = x × y = 50000000
+2. Trade:
+ *  You want to swap 1,000 of token A for token B.
+3. Post-Trade State Calculation:
+ * New x = 10000 + 1000 = 11000
+ * Solve for new y using k:
+   11000 × y = 50000000 ⇒ y = 50000000/11000 ≈ 4545.45
+4. Tokens Received:
+ * Tokens received = Initial y - New y = 5000 - 4545.45 = 454.55
 #### Addressing Slippage in Uniswap V2
 Uniswap V2, like its predecessor, utilizes a formula 
 x×y=k where x and y represent the quantities of two different tokens in the liquidity pool, and k is a constant. When a trade is executed, it alters the balances of 
 x and y, thus changing the price according to the curve defined by this equation.
 
 To address slippage, Uniswap V2 allows users to specify a maximum slippage tolerance when placing a trade. This means trades will revert if the price slippage exceeds the user’s specified tolerance, preventing unexpected losses due to high slippage in volatile market conditions. This is especially important in large trades relative to the pool's size.
+
+#### Example function to calculate minimum expected tokens with slippage tolerance:
 
 ![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/a134f70c-fd5d-41cd-93a6-a3e1a0e8dad3)
 
