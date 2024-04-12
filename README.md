@@ -38,7 +38,7 @@ x and y, thus changing the price according to the curve defined by this equation
 To address slippage, Uniswap V2 allows users to specify a maximum slippage tolerance when placing a trade. This means trades will revert if the price slippage exceeds the user’s specified tolerance, preventing unexpected losses due to high slippage in volatile market conditions. This is especially important in large trades relative to the pool's size.
 
 
-![Uploading image.png…]()
+![image](https://github.com/hsutzu/2024-Spring-HW2/assets/87229781/dba63e6a-77fb-4105-b699-aceaaf12df6a)
 
 
 ## Problem 3
